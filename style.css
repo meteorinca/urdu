@@ -1,0 +1,111 @@
+@font-face {
+  font-family: "MyUrduFont";
+  src: url("fonts/MyUrduFont.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --bg: #0b1220;
+  --card: #121a2b;
+  --text: #f3f7ff;
+  --muted: #a8b3cf;
+  --accent: #7c5cff;
+  --border: rgba(255,255,255,0.12);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: radial-gradient(circle at top, #17203a, var(--bg));
+  color: var(--text);
+}
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  gap: 18px;
+}
+
+.card {
+  background: rgba(18, 26, 43, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--muted);
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: #0e1526;
+  color: var(--text);
+  font-size: 1.2rem;
+  line-height: 1.8;
+  direction: rtl;
+  text-align: right;
+  font-family: "MyUrduFont", "Noto Naskh Arabic", serif;
+}
+
+.preview {
+  min-height: 120px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px dashed var(--border);
+  background: #0e1526;
+  font-size: 2rem;
+  line-height: 2.2;
+  direction: rtl;
+  text-align: right;
+  font-family: "MyUrduFont", "Noto Naskh Arabic", serif;
+  white-space: pre-wrap;
+}
+
+.controls {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 700;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #27324a;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
