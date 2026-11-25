@@ -4,6 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Urdu Font Writer</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alkalami&family=Amiri&family=Aref+Ruqaa&family=Cairo&family=Changa&family=Gulzar&family=Harmattan&family=IBM+Plex+Sans+Arabic&family=Katibeh&family=Kufam&family=Lalezar&family=Lateef&family=Lemonada&family=Marhey&family=Markazi+Text&family=Mirza&family=Noto+Kufi+Arabic&family=Noto+Naskh+Arabic&family=Noto+Nastaliq+Urdu&family=Rakkas&family=Reem+Kufi&family=Scheherazade+New&family=Tajawal&family=Vazirmatn&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -17,6 +24,50 @@
       <div class="section-header">
         <label for="textInput">Your text</label>
         <div class="mode-controls" dir="ltr">
+          <label class="font-picker" for="fontSelect">
+            <span class="font-picker-label">Style</span>
+            <select id="fontSelect" aria-label="Choose Urdu font style">
+              <optgroup label="Custom">
+                <option value="MyUrduFont">My Urdu Font (Custom)</option>
+              </optgroup>
+              <optgroup label="Nastaliq (Traditional Urdu)">
+                <option value="Noto Nastaliq Urdu">Noto Nastaliq Urdu (Classic Nastaliq)</option>
+                <option value="Gulzar">Gulzar (Modern Nastaliq)</option>
+              </optgroup>
+              <optgroup label="Calligraphy &amp; Script">
+                <option value="Aref Ruqaa">Aref Ruqaa (Ruq'ah Script)</option>
+                <option value="Alkalami">Alkalami (Reed Pen Qalam)</option>
+                <option value="Katibeh">Katibeh (Persian/Urdu Manuscript)</option>
+                <option value="Amiri">Amiri (Classical Calligraphy)</option>
+                <option value="Rakkas">Rakkas (Ottoman Calligraphic)</option>
+                <option value="Marhey">Marhey (Playful Hand-Lettered)</option>
+              </optgroup>
+              <optgroup label="Naskh (Book &amp; Print)">
+                <option value="Noto Naskh Arabic">Noto Naskh (Clean Print)</option>
+                <option value="Scheherazade New">Scheherazade New (Traditional Naskh)</option>
+                <option value="Lateef">Lateef (Light Naskh)</option>
+                <option value="Markazi Text">Markazi Text (Editorial Naskh)</option>
+                <option value="Harmattan">Harmattan (Clear Reading Naskh)</option>
+              </optgroup>
+              <optgroup label="Kufi &amp; Geometric">
+                <option value="Reem Kufi">Reem Kufi (Classic Kufic)</option>
+                <option value="Noto Kufi Arabic">Noto Kufi (Modern Geometric)</option>
+                <option value="Kufam">Kufam (Contemporary Kufi)</option>
+              </optgroup>
+              <optgroup label="Display &amp; Headlines">
+                <option value="Mirza">Mirza (Bold Display)</option>
+                <option value="Lalezar">Lalezar (Heavy Poster / Cinema)</option>
+                <option value="Changa">Changa (Sturdy Square Display)</option>
+                <option value="Lemonada">Lemonada (Rounded Decorative)</option>
+              </optgroup>
+              <optgroup label="Modern Sans &amp; UI">
+                <option value="Vazirmatn">Vazirmatn (Modern Clean Sans)</option>
+                <option value="Cairo">Cairo (Contemporary Sans)</option>
+                <option value="Tajawal">Tajawal (Minimal UI Sans)</option>
+                <option value="IBM Plex Sans Arabic">IBM Plex Sans (Crisp Tech Sans)</option>
+              </optgroup>
+            </select>
+          </label>
           <button type="button" id="phoneticToggle" class="toggle-btn active" aria-pressed="true" title="Map English QWERTY keys to Urdu phonetic letters">
             Urdu Typing: ON
           </button>

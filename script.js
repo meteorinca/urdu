@@ -2,11 +2,51 @@ const textInput = document.getElementById("textInput");
 const preview = document.getElementById("preview");
 const copyBtn = document.getElementById("copyBtn");
 const clearBtn = document.getElementById("clearBtn");
+const fontSelect = document.getElementById("fontSelect");
 const phoneticToggle = document.getElementById("phoneticToggle");
 const keyboardToggle = document.getElementById("keyboardToggle");
 const keyboardContainer = document.getElementById("keyboardContainer");
 const urduKeyboard = document.getElementById("urduKeyboard");
 const layerIndicator = document.getElementById("layerIndicator");
+
+const FONT_STYLES = {
+  "MyUrduFont": { family: '"MyUrduFont", "Noto Naskh Arabic", serif', lineHeight: "2.2" },
+  "Noto Nastaliq Urdu": { family: '"Noto Nastaliq Urdu", "MyUrduFont", serif', lineHeight: "2.75" },
+  "Gulzar": { family: '"Gulzar", "MyUrduFont", serif', lineHeight: "2.5" },
+  "Aref Ruqaa": { family: '"Aref Ruqaa", "MyUrduFont", serif', lineHeight: "2.35" },
+  "Alkalami": { family: '"Alkalami", "MyUrduFont", serif', lineHeight: "2.4" },
+  "Katibeh": { family: '"Katibeh", "MyUrduFont", serif', lineHeight: "2.25" },
+  "Amiri": { family: '"Amiri", "MyUrduFont", serif', lineHeight: "2.15" },
+  "Rakkas": { family: '"Rakkas", "MyUrduFont", serif', lineHeight: "2.3" },
+  "Marhey": { family: '"Marhey", "MyUrduFont", sans-serif', lineHeight: "2.2" },
+  "Noto Naskh Arabic": { family: '"Noto Naskh Arabic", "MyUrduFont", serif', lineHeight: "2.1" },
+  "Scheherazade New": { family: '"Scheherazade New", "MyUrduFont", serif', lineHeight: "2.2" },
+  "Lateef": { family: '"Lateef", "MyUrduFont", serif', lineHeight: "2.1" },
+  "Markazi Text": { family: '"Markazi Text", "MyUrduFont", serif', lineHeight: "2.1" },
+  "Harmattan": { family: '"Harmattan", "MyUrduFont", serif', lineHeight: "2.15" },
+  "Reem Kufi": { family: '"Reem Kufi", "MyUrduFont", sans-serif', lineHeight: "2.1" },
+  "Noto Kufi Arabic": { family: '"Noto Kufi Arabic", "MyUrduFont", sans-serif', lineHeight: "2.1" },
+  "Kufam": { family: '"Kufam", "MyUrduFont", sans-serif', lineHeight: "2.1" },
+  "Mirza": { family: '"Mirza", "MyUrduFont", serif', lineHeight: "2.1" },
+  "Lalezar": { family: '"Lalezar", "MyUrduFont", sans-serif', lineHeight: "2.05" },
+  "Changa": { family: '"Changa", "MyUrduFont", sans-serif', lineHeight: "2.05" },
+  "Lemonada": { family: '"Lemonada", "MyUrduFont", sans-serif', lineHeight: "2.25" },
+  "Vazirmatn": { family: '"Vazirmatn", "MyUrduFont", sans-serif', lineHeight: "2.05" },
+  "Cairo": { family: '"Cairo", "MyUrduFont", sans-serif', lineHeight: "2.05" },
+  "Tajawal": { family: '"Tajawal", "MyUrduFont", sans-serif', lineHeight: "2.05" },
+  "IBM Plex Sans Arabic": { family: '"IBM Plex Sans Arabic", "MyUrduFont", sans-serif', lineHeight: "2.05" },
+};
+
+const FONT_STORAGE_KEY = "urduFontWriter.selectedFont";
+
+function applyFontStyle(fontKey) {
+  const style = FONT_STYLES[fontKey] || FONT_STYLES["MyUrduFont"];
+  document.documentElement.style.setProperty("--urdu-font", style.family);
+  document.documentElement.style.setProperty("--urdu-line-height", style.lineHeight);
+  if (fontSelect.value !== fontKey && FONT_STYLES[fontKey]) {
+    fontSelect.value = fontKey;
+  }
+}
 
 // Standard Urdu Phonetic layout rows (each key maps normal & shifted characters)
 const KEYBOARD_ROWS = [
@@ -340,6 +380,16 @@ textInput.addEventListener("click", saveSelection);
 textInput.addEventListener("keyup", saveSelection);
 textInput.addEventListener("select", saveSelection);
 
+fontSelect.addEventListener("change", () => {
+  const chosen = fontSelect.value;
+  applyFontStyle(chosen);
+  try {
+    localStorage.setItem(FONT_STORAGE_KEY, chosen);
+  } catch {
+    // Ignore storage errors in restricted contexts
+  }
+});
+
 phoneticToggle.addEventListener("click", () => {
   phoneticEnabled = !phoneticEnabled;
   phoneticToggle.textContent = `Urdu Typing: ${phoneticEnabled ? "ON" : "OFF"}`;
@@ -373,6 +423,15 @@ clearBtn.addEventListener("click", () => {
   syncPreview();
   textInput.focus();
 });
+
+try {
+  const savedFont = localStorage.getItem(FONT_STORAGE_KEY);
+  if (savedFont && FONT_STYLES[savedFont]) {
+    applyFontStyle(savedFont);
+  }
+} catch {
+  // Ignore storage errors
+}
 
 renderKeyboard();
 syncPreview();
