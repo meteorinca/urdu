@@ -10,16 +10,35 @@
   <main class="app">
     <section class="card hero">
       <h1>Urdu Font Writer</h1>
-      <p>Type anything in Urdu and preview it instantly in your font.</p>
+      <p>Type in Urdu using your keyboard (phonetic layout) or click/tap the on-screen Urdu keyboard.</p>
     </section>
 
     <section class="card">
-      <label for="textInput">Your text</label>
-      <textarea id="textInput" placeholder="یہاں اردو میں لکھیں...">السلام علیکم</textarea>
+      <div class="section-header">
+        <label for="textInput">Your text</label>
+        <div class="mode-controls" dir="ltr">
+          <button type="button" id="phoneticToggle" class="toggle-btn active" aria-pressed="true" title="Map English QWERTY keys to Urdu phonetic letters">
+            Urdu Typing: ON
+          </button>
+          <button type="button" id="keyboardToggle" class="toggle-btn active" aria-pressed="true" title="Show or hide the on-screen Urdu keyboard">
+            Keyboard: ON
+          </button>
+        </div>
+      </div>
+
+      <textarea id="textInput" placeholder="یہاں اردو میں لکھیں..." spellcheck="false">السلام علیکم</textarea>
 
       <div class="controls">
-        <button id="copyBtn">Copy text</button>
-        <button id="clearBtn" class="secondary">Clear</button>
+        <button type="button" id="copyBtn">Copy text</button>
+        <button type="button" id="clearBtn" class="secondary">Clear</button>
+      </div>
+
+      <div id="keyboardContainer" class="keyboard-wrapper" dir="ltr" aria-label="On-screen Urdu Keyboard">
+        <div class="keyboard-meta">
+          <span class="keyboard-hint">Phonetic layout — click, tap, or type on your keyboard</span>
+          <span id="layerIndicator" class="layer-badge">Normal</span>
+        </div>
+        <div id="urduKeyboard" class="keyboard" role="group" aria-label="Urdu keys"></div>
       </div>
     </section>
 

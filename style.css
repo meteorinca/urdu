@@ -10,22 +10,28 @@
   --text: #f3f7ff;
   --muted: #a8b3cf;
   --accent: #7c5cff;
+  --accent-soft: rgba(124, 92, 255, 0.22);
   --border: rgba(255,255,255,0.12);
+  --key-bg: #1b253b;
+  --key-bg-hover: #253352;
+  --key-bg-active: #7c5cff;
+  --key-special: #232f48;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
+  min-height: 100vh;
   font-family: system-ui, sans-serif;
   background: radial-gradient(circle at top, #17203a, var(--bg));
   color: var(--text);
 }
 
 .app {
-  max-width: 900px;
+  max-width: 940px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 20px;
   display: grid;
   gap: 18px;
 }
@@ -48,6 +54,15 @@ body {
   color: var(--muted);
 }
 
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
 label {
   display: block;
   margin-bottom: 10px;
@@ -55,20 +70,37 @@ label {
   font-size: 0.95rem;
 }
 
+.section-header label {
+  margin-bottom: 0;
+}
+
+.mode-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 textarea {
   width: 100%;
-  min-height: 140px;
+  min-height: 128px;
   resize: vertical;
   padding: 16px;
   border-radius: 16px;
   border: 1px solid var(--border);
   background: #0e1526;
   color: var(--text);
-  font-size: 1.2rem;
-  line-height: 1.8;
+  font-size: 1.35rem;
+  line-height: 1.9;
   direction: rtl;
   text-align: right;
   font-family: "MyUrduFont", "Noto Naskh Arabic", serif;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+textarea:focus {
+  border-color: rgba(124, 92, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.18);
 }
 
 .preview {
@@ -83,6 +115,7 @@ textarea {
   text-align: right;
   font-family: "MyUrduFont", "Noto Naskh Arabic", serif;
   white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .controls {
@@ -95,17 +128,227 @@ textarea {
 button {
   border: 0;
   border-radius: 999px;
-  padding: 12px 18px;
+  padding: 11px 18px;
   font-weight: 700;
+  font-size: 0.92rem;
   background: var(--accent);
   color: white;
   cursor: pointer;
+  touch-action: manipulation;
+  transition: filter 0.12s ease, transform 0.08s ease, background-color 0.12s ease;
 }
 
 button.secondary {
   background: #27324a;
 }
 
+button.toggle-btn {
+  padding: 7px 13px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: #222d44;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+button.toggle-btn.active {
+  background: var(--accent-soft);
+  color: #e4dcff;
+  border-color: rgba(124, 92, 255, 0.55);
+}
+
 button:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.08);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* On-screen Urdu Keyboard */
+.keyboard-wrapper {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #0e1526;
+  border: 1px solid var(--border);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.keyboard-wrapper.hidden {
+  display: none;
+}
+
+.keyboard-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.layer-badge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #1b253b;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.layer-badge.shift-active {
+  background: var(--accent-soft);
+  border-color: rgba(124, 92, 255, 0.65);
+  color: #e4dcff;
+}
+
+.keyboard {
+  display: grid;
+  gap: 7px;
+}
+
+.kb-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  width: 100%;
+}
+
+.kb-key {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 52px;
+  padding: 4px 2px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--key-bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  font-weight: 500;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kb-key:hover {
+  background: var(--key-bg-hover);
+  filter: none;
+}
+
+.kb-key.is-pressed,
+.kb-key:active {
+  background: var(--key-bg-active);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.kb-key .urdu-char {
+  font-family: "MyUrduFont", "Noto Naskh Arabic", serif;
+  font-size: clamp(1.05rem, 2.3vw, 1.38rem);
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.kb-key .latin-hint {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--muted);
+  opacity: 0.72;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.kb-key.is-pressed .latin-hint {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.kb-key.special {
+  background: var(--key-special);
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #dbe4ff;
+}
+
+.kb-key.special:hover {
+  background: #2c3b5c;
+}
+
+.kb-key.wide {
+  flex: 1.55 1 0;
+}
+
+.kb-key.extra-wide {
+  flex: 1.9 1 0;
+}
+
+.kb-key.space-key {
+  flex: 5.5 1 0;
+}
+
+.kb-key.shift-on {
+  background: var(--accent);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+}
+
+@media (max-width: 680px) {
+  .app {
+    padding: 12px;
+    gap: 14px;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .hero h1 {
+    font-size: 1.55rem;
+  }
+
+  .keyboard-wrapper {
+    padding: 8px 6px;
+  }
+
+  .keyboard {
+    gap: 5px;
+  }
+
+  .kb-row {
+    gap: 4px;
+  }
+
+  .kb-key {
+    height: 46px;
+    border-radius: 8px;
+  }
+
+  .kb-key .latin-hint {
+    top: 2px;
+    left: 3px;
+    font-size: 0.55rem;
+  }
+
+  .kb-key.special {
+    font-size: 0.7rem;
+  }
+
+  .keyboard-hint {
+    font-size: 0.72rem;
+  }
 }
